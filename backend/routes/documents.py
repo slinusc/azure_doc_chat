@@ -227,7 +227,7 @@ def get_pdf_page(filename, page_number):
 
             # Render page to image with good quality
             pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))  # 2x zoom for better quality
-            image_bytes = pix.tobytes("png")
+            image_bytes = pix.tobytes(fmt="png")
 
             pdf_document.close()
 

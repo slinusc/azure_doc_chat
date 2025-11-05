@@ -127,6 +127,15 @@ class PDFProcessor:
             # Extract content and metadata from Document objects
             chunks = []
             current_page = 1
+            chunk_index = 0
+
+            # Secondary splitter for chunks that are too large for embeddings model
+            # Text-embedding-3-small has max 8192 tokens (~30KB characters)
+            secondary_splitter = RecursiveCharacterTextSplitter(
+                chunk_size=6000,  # Conservative size in characters
+                chunk_overlap=500,
+                separators=["\n\n", "\n", ". ", " ", ""]
+            )
 
             for idx, split in enumerate(splits):
                 # Count page breaks before this chunk to determine current page
@@ -135,12 +144,26 @@ class PDFProcessor:
                 page_breaks_before = text_before.count('<!-- PageBreak -->')
                 current_page = page_breaks_before + 1
 
-                chunk_dict = {
-                    'text': split.page_content,
-                    'page_number': current_page,
-                    'chunk_index': idx
-                }
-                chunks.append(chunk_dict)
+                # If chunk is too large, split it further
+                if len(split.page_content) > 6000:
+                    logger.debug(f"Chunk {idx} is {len(split.page_content)} chars, splitting further...")
+                    sub_chunks = secondary_splitter.split_text(split.page_content)
+                    for sub_chunk in sub_chunks:
+                        chunk_dict = {
+                            'text': sub_chunk,
+                            'page_number': current_page,
+                            'chunk_index': chunk_index
+                        }
+                        chunks.append(chunk_dict)
+                        chunk_index += 1
+                else:
+                    chunk_dict = {
+                        'text': split.page_content,
+                        'page_number': current_page,
+                        'chunk_index': chunk_index
+                    }
+                    chunks.append(chunk_dict)
+                    chunk_index += 1
 
             if chunks:
                 logger.info(f"Created {len(chunks)} chunks using markdown headers and figure boundaries")

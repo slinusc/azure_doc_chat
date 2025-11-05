@@ -275,7 +275,12 @@ class ChatbotApp {
 
             const contentEl = document.createElement('div');
             contentEl.className = 'message-content';
-            contentEl.textContent = '';  // Will be filled by streaming chunks
+
+            // Create loading dots animation
+            const dotsEl = document.createElement('span');
+            dotsEl.className = 'typing-dots';
+            dotsEl.innerHTML = '<span></span><span></span><span></span>';
+            contentEl.appendChild(dotsEl);
 
             const timestampEl = document.createElement('div');
             timestampEl.className = 'message-timestamp';
@@ -290,12 +295,21 @@ class ChatbotApp {
             scrollToBottom(this.chatMessages);
 
             let sources = [];
+            let isFirstChunk = true;
+            let messageText = '';
 
             // Use streaming API
             const response = await apiService.sendMessageStreaming(query, (chunk) => {
                 if (chunk.type === 'chunk') {
-                    // Update the content element with new character
-                    contentEl.textContent += chunk.content;
+                    // Remove loading dots on first real chunk
+                    if (isFirstChunk) {
+                        contentEl.innerHTML = '';
+                        messageText = '';
+                        isFirstChunk = false;
+                    }
+                    // Update the message text
+                    messageText += chunk.content;
+                    contentEl.textContent = messageText;
                     scrollToBottom(this.chatMessages);
                 } else if (chunk.type === 'sources') {
                     // Store sources for later use
