@@ -227,12 +227,14 @@ def get_pdf_page(filename, page_number):
 
             # Render page to image with good quality
             pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))  # 2x zoom for better quality
-            image_bytes = pix.tobytes(fmt="png")
+
+            # Convert pixmap to PNG bytes using correct method
+            png_bytes = pix.tobytes("png")
 
             pdf_document.close()
 
             return send_file(
-                io.BytesIO(image_bytes),
+                io.BytesIO(png_bytes),
                 mimetype='image/png',
                 as_attachment=False
             )

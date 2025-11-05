@@ -2,6 +2,8 @@
 
 A RAG (Retrieval-Augmented Generation) chatbot built on Azure cloud services. Upload PDF documents and ask questions using an intelligent AI assistant powered by Azure OpenAI and vector search.
 
+![Azure RAG Application Screenshot](./frontend/screenshots/app-demo.png)
+
 ## Features
 
 - **Document Upload**: Drag-and-drop PDF uploads with automatic processing
