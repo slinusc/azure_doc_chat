@@ -348,13 +348,13 @@ body {
 .typing-dots {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
 }
 
 .typing-dots span {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background-color: currentColor;
     animation: typing 1.4s infinite;
