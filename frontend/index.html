@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with your Documents</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>Chat with your Documents!</h1>
+                <p class="header-subtitle">Powered by Azure AI</p>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Left Sidebar - Documents -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Documents</h2>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p>Drop PDF here</p>
+                        <input type="file" id="fileInput" multiple accept=".pdf" style="display: none;">
+                    </div>
+                </div>
+
+                <!-- Document List -->
+                <div class="document-list-container">
+                    <div id="documentList" class="document-list"></div>
+                </div>
+            </aside>
+
+            <!-- Center - Chat -->
+            <main class="chat-main">
+                <!-- Upload Status -->
+                <div id="uploadStatus" class="upload-status"></div>
+
+                <!-- Chat Container -->
+                <div class="chat-container">
+                    <div id="chatMessages" class="chat-messages"></div>
+                    <div class="chat-input-wrapper">
+                        <input
+                            type="text"
+                            id="userInput"
+                            placeholder="Ask a question about your documents..."
+                            class="chat-input"
+                        >
+                        <button id="sendButton" class="send-button">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 L4.13399899,1.16390963 C3.34915502,0.9 2.40734225,1.00636533 1.77946707,1.4776575 C0.994623095,2.10604706 0.837654326,3.0486314 1.15159189,3.99701575 L3.03521743,10.4380088 C3.03521743,10.5950566 3.34915502,10.5950566 3.50612381,10.5950566 L16.6915026,11.3805435 C16.6915026,11.3805435 17.1624089,11.3805435 17.1624089,11.7939826 L17.1624089,12.0510799 C17.1624089,12.4744748 16.6915026,12.4744748 16.6915026,12.4744748 Z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar - PDF Preview -->
+            <aside class="pdf-preview-panel" id="pdfPreviewPanel">
+                <div class="pdf-preview-header">
+                    <h3>Source Document</h3>
+                </div>
+                <div id="pdfPreviewContent" class="pdf-preview-content">
+                    <p style="color: #999; text-align: center; padding: 2rem;">Click a source citation to view</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Fullscreen PDF Modal -->
+    <div id="pdfModal" class="pdf-modal">
+        <div class="pdf-modal-content">
+            <button class="pdf-modal-close" onclick="closePdfModal()">&times;</button>
+            <img id="pdfModalImage" class="pdf-modal-image" alt="PDF Page">
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
